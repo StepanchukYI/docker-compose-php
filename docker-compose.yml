@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  www-root:
+  project:
 
 
 services:
@@ -23,7 +23,7 @@ services:
       - mysql
       - mailhog
     networks:
-      - www-root
+      - project
 
   mysql:
     image: mariadb:10.6
@@ -40,7 +40,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
-      - www-root
+      - project
 
   php:
     build:
@@ -53,7 +53,7 @@ services:
     volumes:
       - ./src:/var/www/html
     networks:
-      - www-root
+      - project
 
   redis:
     image: redis:alpine
@@ -62,7 +62,7 @@ services:
     ports:
       - 6379:6379
     networks:
-      - www-root
+      - project
 
   composer:
     build:
@@ -80,7 +80,7 @@ services:
     user: www-root
     entrypoint: [ 'composer', '--ignore-platform-reqs' ]
     networks:
-      - www-root
+      - project
 
   npm:
     image: node:13.7
@@ -93,7 +93,7 @@ services:
     working_dir: /var/www/html
     entrypoint: [ 'npm' ]
     networks:
-      - www-root
+      - project
 
   artisan:
     build:
@@ -110,7 +110,7 @@ services:
     working_dir: /var/www/html
     entrypoint: [ 'php', '/var/www/html/artisan' ]
     networks:
-      - www-root
+      - project
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -119,4 +119,4 @@ services:
       - 1025:1025
       - 8025:8025
     networks:
-      - www-root
+      - project

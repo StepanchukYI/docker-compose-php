@@ -6,12 +6,14 @@ ARG GID
 ENV UID=${UID}
 ENV GID=${GID}
 
-RUN mkdir -p /var/www/html
-
-WORKDIR /var/www/html
-
 RUN addgroup -g ${GID} --system www-root
 RUN adduser -G www-root --system -D -s /bin/sh -u ${UID} www-root
+
+RUN mkdir -p /var/www/html
+
+RUN chown www-root:www-root /var/www/html
+
+WORKDIR /var/www/html
 
 RUN sed -i "s/user = www-data/user = www-root/g" /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i "s/group = www-data/group = www-root/g" /usr/local/etc/php-fpm.d/www.conf
