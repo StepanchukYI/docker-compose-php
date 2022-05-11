@@ -1,7 +1,7 @@
 version: '3'
 
 networks:
-  laravel:
+  www-root:
 
 services:
   site:
@@ -19,7 +19,7 @@ services:
       - mysql
       - mailhog
     networks:
-      - laravel
+      - www-root
 
   mysql:
     image: mariadb:10.6
@@ -36,7 +36,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
-      - laravel
+      - www-root
 
   php:
     build:
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./src:/var/www/html:delegated
     networks:
-      - laravel
+      - www-root
 
   redis:
     image: redis:alpine
@@ -55,7 +55,7 @@ services:
     ports:
       - 6379:6379
     networks:
-      - laravel
+      - www-root
 
   composer:
     image: composer:2
@@ -68,7 +68,7 @@ services:
     user: root
     entrypoint: ['composer', '--ignore-platform-reqs']
     networks:
-      - laravel
+      - www-root
 
   npm:
     image: node:13.7
@@ -81,7 +81,7 @@ services:
     working_dir: /var/www/html
     entrypoint: ['npm']
     networks:
-      - laravel
+      - www-root
 
   artisan:
     build:
@@ -95,7 +95,7 @@ services:
     working_dir: /var/www/html
     entrypoint: ['php', '/var/www/html/artisan']
     networks:
-      - laravel
+      - www-root
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -104,4 +104,4 @@ services:
       - 1025:1025
       - 8025:8025
     networks:
-      - laravel
+      - www-root
